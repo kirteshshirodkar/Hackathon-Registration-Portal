@@ -1,0 +1,29 @@
+
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import Signup from "../pages/Signup";
+import Login from "../pages/Login";
+import VerifyOTP from "../pages/VerifyOTP";
+import Dashboard from "../pages/Dashboard";
+
+const AppRoutes = () => {
+  return (
+    <Routes>
+      {/* Public routes */}
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/verify-otp" element={<VerifyOTP />} />
+
+      {/* Protected routes - protection will be added later */}
+      <Route path="/dashboard" element={<Dashboard />} />
+
+      {/* Default route */}
+      <Route path="/" element={<Navigate to="/signup" replace />} />
+
+      {/* Unknown routes */}
+      <Route path="*" element={<Navigate to="/signup" replace />} />
+    </Routes>
+  );
+};
+
+export default AppRoutes;
