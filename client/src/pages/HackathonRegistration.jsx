@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -56,12 +55,7 @@ const BRANCHES = [
   "Other",
 ];
 
-const YEARS = [
-  "1st Year",
-  "2nd Year",
-  "3rd Year",
-  "4th Year",
-];
+const YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
 
 const DOMAINS = [
   "AI/ML",
@@ -97,10 +91,7 @@ const mobileRegex = /^[6-9]\d{9}$/;
 const isValidUrl = (value) => {
   try {
     const url = new URL(value);
-    return (
-      url.protocol === "https:" ||
-      url.protocol === "http:"
-    );
+    return url.protocol === "https:" || url.protocol === "http:";
   } catch {
     return false;
   }
@@ -137,9 +128,7 @@ const InputField = ({
       readOnly={readOnly}
       maxLength={maxLength}
       className={`w-full rounded-xl border ${
-        error
-          ? "border-red-500/50"
-          : "border-white/10"
+        error ? "border-red-500/50" : "border-white/10"
       } ${
         readOnly
           ? "cursor-not-allowed bg-white/[0.03] text-gray-400"
@@ -147,20 +136,11 @@ const InputField = ({
       } px-4 py-3 text-sm outline-none transition placeholder:text-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20`}
     />
 
-    {error && (
-      <p className="mt-1.5 text-xs text-red-400">{error}</p>
-    )}
+    {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
   </div>
 );
 
-const SelectField = ({
-  label,
-  name,
-  value,
-  onChange,
-  options,
-  error,
-}) => (
+const SelectField = ({ label, name, value, onChange, options, error }) => (
   <div>
     <label className="mb-2 block text-sm font-medium text-gray-300">
       {label}
@@ -185,9 +165,7 @@ const SelectField = ({
       ))}
     </select>
 
-    {error && (
-      <p className="mt-1.5 text-xs text-red-400">{error}</p>
-    )}
+    {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
   </div>
 );
 
@@ -199,9 +177,7 @@ const SectionHeading = ({ icon: Icon, title, description }) => (
 
     <div>
       <h3 className="font-semibold text-white">{title}</h3>
-      <p className="mt-1 text-xs leading-5 text-gray-500">
-        {description}
-      </p>
+      <p className="mt-1 text-xs leading-5 text-gray-500">{description}</p>
     </div>
   </div>
 );
@@ -243,7 +219,7 @@ const HackathonRegistration = () => {
           prev.teamMembers[index] || {
             name: "",
             email: "",
-          }
+          },
       );
 
       return {
@@ -300,8 +276,7 @@ const HackathonRegistration = () => {
 
     // Mobile
     if (!mobileRegex.test(formData.mobileNumber.trim())) {
-      newErrors.mobileNumber =
-        "Enter a valid 10-digit Indian mobile number.";
+      newErrors.mobileNumber = "Enter a valid 10-digit Indian mobile number.";
     }
 
     // College
@@ -440,12 +415,14 @@ const HackathonRegistration = () => {
     try {
       setLoading(true);
 
-      await submitRegistration(registrationData);
+      const response = await submitRegistration(registrationData);
 
       navigate("/dashboard", {
         replace: true,
         state: {
           registrationSuccess: true,
+          emailSent: response.emailSent,
+          message: response.message,
         },
       });
     } catch (error) {
@@ -455,7 +432,7 @@ const HackathonRegistration = () => {
       if (status === 409) {
         setSubmitError(
           responseData?.message ||
-            "You have already registered for this hackathon."
+            "You have already registered for this hackathon.",
         );
       } else if (status === 400 && responseData?.errors) {
         const backendErrors = {};
@@ -473,7 +450,7 @@ const HackathonRegistration = () => {
       } else {
         setSubmitError(
           responseData?.message ||
-            "Unable to submit your registration. Please try again."
+            "Unable to submit your registration. Please try again.",
         );
       }
 
@@ -488,7 +465,6 @@ const HackathonRegistration = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
-
       {/* Background glow */}
       <div className="pointer-events-none fixed -left-40 top-0 h-96 w-96 rounded-full bg-violet-600/15 blur-[120px]" />
       <div className="pointer-events-none fixed -right-40 top-80 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px]" />
@@ -522,7 +498,6 @@ const HackathonRegistration = () => {
       </header>
 
       <main className="relative z-10 mx-auto max-w-5xl px-5 py-10 sm:px-8">
-
         {/* Page heading */}
         <div className="mb-8">
           <p className="text-xs font-semibold tracking-[0.2em] text-violet-400">
@@ -530,13 +505,12 @@ const HackathonRegistration = () => {
           </p>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Register for the{" "}
-            <span className="text-violet-400">Hackathon.</span>
+            Register for the <span className="text-violet-400">Hackathon.</span>
           </h2>
 
           <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
-            Tell us about yourself, your project and your team.
-            Complete all required details to submit your registration.
+            Tell us about yourself, your project and your team. Complete all
+            required details to submit your registration.
           </p>
 
           <div className="mt-5 flex items-center gap-2 text-xs text-gray-500">
@@ -548,16 +522,12 @@ const HackathonRegistration = () => {
         {/* Error summary */}
         {submitError && (
           <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/10 p-4">
-            <AlertCircle
-              size={19}
-              className="mt-0.5 shrink-0 text-red-400"
-            />
+            <AlertCircle size={19} className="mt-0.5 shrink-0 text-red-400" />
             <p className="text-sm text-red-300">{submitError}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} noValidate className="space-y-6">
-
           {/* Participant details */}
           <section className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl sm:p-8">
             <SectionHeading
@@ -591,9 +561,7 @@ const HackathonRegistration = () => {
                 name="mobileNumber"
                 value={formData.mobileNumber}
                 onChange={(e) => {
-                  const value = e.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 10);
+                  const value = e.target.value.replace(/\D/g, "").slice(0, 10);
 
                   handleChange({
                     target: {
@@ -750,11 +718,7 @@ const HackathonRegistration = () => {
                 className="w-full rounded-xl border border-white/10 bg-[#0b1020] px-4 py-3 text-sm text-white outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
               >
                 {[1, 2, 3, 4, 5].map((size) => (
-                  <option
-                    key={size}
-                    value={size}
-                    className="bg-[#0b1020]"
-                  >
+                  <option key={size} value={size} className="bg-[#0b1020]">
                     {size} {size === 1 ? "Member" : "Members"}
                   </option>
                 ))}
@@ -765,9 +729,7 @@ const HackathonRegistration = () => {
               </p>
 
               {errors.teamSize && (
-                <p className="mt-1 text-xs text-red-400">
-                  {errors.teamSize}
-                </p>
+                <p className="mt-1 text-xs text-red-400">{errors.teamSize}</p>
               )}
             </div>
 
@@ -781,9 +743,7 @@ const HackathonRegistration = () => {
 
                   <span className="text-xs text-violet-400">
                     {formData.teamMembers.length} additional{" "}
-                    {formData.teamMembers.length === 1
-                      ? "member"
-                      : "members"}
+                    {formData.teamMembers.length === 1 ? "member" : "members"}
                   </span>
                 </div>
 
@@ -812,7 +772,7 @@ const HackathonRegistration = () => {
                             ...prev,
                             teamSize: String(newSize),
                             teamMembers: prev.teamMembers.filter(
-                              (_, memberIndex) => memberIndex !== index
+                              (_, memberIndex) => memberIndex !== index,
                             ),
                           }));
 
@@ -832,11 +792,7 @@ const HackathonRegistration = () => {
                         name={`member-${index}-name`}
                         value={member.name}
                         onChange={(e) =>
-                          handleTeamMemberChange(
-                            index,
-                            "name",
-                            e.target.value
-                          )
+                          handleTeamMemberChange(index, "name", e.target.value)
                         }
                         placeholder="Enter member name"
                         error={errors[`teamMembers.${index}.name`]}
@@ -847,11 +803,7 @@ const HackathonRegistration = () => {
                         name={`member-${index}-email`}
                         value={member.email}
                         onChange={(e) =>
-                          handleTeamMemberChange(
-                            index,
-                            "email",
-                            e.target.value
-                          )
+                          handleTeamMemberChange(index, "email", e.target.value)
                         }
                         placeholder="member@example.com"
                         type="email"
@@ -862,17 +814,12 @@ const HackathonRegistration = () => {
                 ))}
 
                 {errors.teamMembers && (
-                  <p className="text-xs text-red-400">
-                    {errors.teamMembers}
-                  </p>
+                  <p className="text-xs text-red-400">{errors.teamMembers}</p>
                 )}
               </div>
             ) : (
               <div className="mt-6 rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-6 text-center">
-                <Users
-                  size={26}
-                  className="mx-auto text-gray-500"
-                />
+                <Users size={26} className="mx-auto text-gray-500" />
                 <p className="mt-3 text-sm font-medium text-gray-300">
                   You're registering as an individual.
                 </p>
@@ -892,10 +839,9 @@ const HackathonRegistration = () => {
               />
 
               <p className="text-xs leading-6 text-gray-400">
-                By submitting this form, you confirm that the
-                information provided is accurate and that your
-                presentation and prototype links are accessible
-                to the hackathon review team.
+                By submitting this form, you confirm that the information
+                provided is accurate and that your presentation and prototype
+                links are accessible to the hackathon review team.
               </p>
             </div>
           </div>
@@ -917,10 +863,7 @@ const HackathonRegistration = () => {
             >
               {loading ? (
                 <>
-                  <LoaderCircle
-                    size={18}
-                    className="animate-spin"
-                  />
+                  <LoaderCircle size={18} className="animate-spin" />
                   Submitting Registration...
                 </>
               ) : (

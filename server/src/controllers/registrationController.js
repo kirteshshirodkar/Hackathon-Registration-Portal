@@ -1,13 +1,16 @@
 
 import User from "../models/User.js";
 import HackathonRegistration from "../models/HackathonRegistration.js";
+import {
+  sendRegistrationConfirmation,
+} from "../services/emailService.js";
 
 // POST /api/registrations
+
 export const createRegistration = async (req, res) => {
   try {
     const userId = req.userId;
 
-    // Find the authenticated user.
     const user = await User.findById(userId).select(
       "fullName email isVerified"
     );
@@ -26,7 +29,6 @@ export const createRegistration = async (req, res) => {
       });
     }
 
-    // Check if the user has already registered.
     const existingRegistration =
       await HackathonRegistration.findOne({ userId });
 
@@ -39,12 +41,9 @@ export const createRegistration = async (req, res) => {
 
     const registrationData = req.validatedBody;
 
-    // Prevent the participant from being added as their own team member.
-    const participantEmail = user.email.toLowerCase();
-
     const hasOwnEmail = registrationData.teamMembers.some(
       (member) =>
-        member.email.toLowerCase() === participantEmail
+        member.email.toLowerCase() === user.email.toLowerCase()
     );
 
     if (hasOwnEmail) {
@@ -54,7 +53,7 @@ export const createRegistration = async (req, res) => {
       });
     }
 
-    // Create registration using authenticated account details.
+    // Save registration first.
     const registration = await HackathonRegistration.create({
       ...registrationData,
       userId: user._id,
@@ -62,13 +61,28 @@ export const createRegistration = async (req, res) => {
       email: user.email,
     });
 
+    // Send confirmation email separately.
+    let emailSent = false;
+
+    try {
+      await sendRegistrationConfirmation(registration);
+      emailSent = true;
+    } catch (emailError) {
+      console.error(
+        "Registration confirmation email failed:",
+        emailError
+      );
+    }
+
     return res.status(201).json({
       success: true,
-      message: "Hackathon registration submitted successfully.",
+      message: emailSent
+        ? "Registration submitted successfully. Confirmation email sent."
+        : "Registration submitted successfully, but confirmation email could not be sent.",
+      emailSent,
       registration,
     });
   } catch (error) {
-    // Handle duplicate registration caused by concurrent requests.
     if (error.code === 11000) {
       return res.status(409).json({
         success: false,
