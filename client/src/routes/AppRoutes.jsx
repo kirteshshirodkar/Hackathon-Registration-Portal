@@ -5,6 +5,7 @@ import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import VerifyOTP from "../pages/VerifyOTP";
 import Dashboard from "../pages/Dashboard";
+import HackathonRegistration from "../pages/HackathonRegistration";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -23,7 +24,7 @@ const AppRoutes = () => {
 
         {/* Future protected pages */}
         {/* <Route path="/hackathons" element={<Hackathons />} /> */}
-        {/* <Route path="/register" element={<HackathonRegistration />} /> */}
+        <Route path="/register" element={<HackathonRegistration />} />
       </Route>
 
       {/* Default route */}

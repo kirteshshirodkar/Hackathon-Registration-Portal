@@ -465,7 +465,7 @@ const Dashboard = () => {
 
                   <button
                     onClick={() =>
-                      navigate("/hackathon-registration")
+                      navigate("/register")
                     }
                     className="mx-auto mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-3.5 text-sm font-semibold shadow-lg shadow-violet-900/30 transition hover:from-violet-500 hover:to-indigo-500"
                   >
