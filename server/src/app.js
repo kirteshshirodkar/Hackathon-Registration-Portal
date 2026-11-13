@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import registrationRoutes from "./routes/registrationRoutes.js";
 const app = express();
 
 app.use(cors({
@@ -26,6 +27,11 @@ app.get("/", (req, res) => {
 
 // Authentication routes
 app.use("/api/auth", authRoutes);
+
+//User Route
 app.use("/api/user", userRoutes);
+
+//Registration Route
+app.use("/api/registrations", registrationRoutes);
 
 export default app;
