@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(cors({
   origin: process.env.CLIENT_URL,
